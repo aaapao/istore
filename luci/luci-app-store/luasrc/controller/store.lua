@@ -307,7 +307,7 @@ local function get_installed_and_cache()
         result = data
         if cacheable then
             fs.mkdirr(cachedir)
-            local oflags = nixio.open_flags("rdwr", "creat")
+            local oflags = nixio.open_flags("wronly", "creat", "trunc")
             local mfile, code, msg = nixio.open(cachefile, oflags)
             mfile:writeall(jsonc.stringify(result))
             mfile:close()
@@ -568,7 +568,7 @@ function entrysh()
                         errors[#errors+1] = {app=meta.name, code=500, msg="json parse failed: " .. o}
                     else
                         results[#results+1] = status
-                        local oflags = nixio.open_flags("rdwr", "creat")
+                        local oflags = nixio.open_flags("wronly", "creat", "trunc")
                         local mfile, code, msg = nixio.open(cachefile, oflags)
                         mfile:writeall(jsonc.stringify(status))
                         mfile:close()
